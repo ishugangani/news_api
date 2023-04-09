@@ -12,7 +12,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 6,
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -27,19 +27,31 @@ class _HomeScreenState extends State<HomeScreen> {
               labelColor: Colors.white,
               tabs: [
                 Tab(
-                  text: "TOP NEWS",
+                  text: "BUSINESS",
                 ),
                 Tab(
-                  text: "Country",
+                  text: "POLITICS",
                 ),
                 Tab(
                   text: "HEALTH",
+                ),
+                Tab(
+                  text: "EDUCATION",
+                ),
+                Tab(
+                  text: "TECHNOLOGY",
+                ),
+                Tab(
+                  text: "SPORTS",
                 ),
               ],
             ),
           ),
           body: TabBarView(
             children: [
+              NewsScreen(),
+              NewsScreen(),
+              NewsScreen(),
               NewsScreen(),
               NewsScreen(),
               NewsScreen(),

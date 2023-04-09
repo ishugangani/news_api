@@ -1,71 +1,93 @@
-class NewsModal{
-  String? status;
-  int? totalResults;
-  List<Articles>? articleList=[];
+// To parse this JSON data, do
+//
+//     final newsModal = newsModalFromJson(jsonString);
 
-  NewsModal({this.status, this.totalResults, this.articleList});
+import 'dart:convert';
 
-  NewsModal newsJson(Map m1)
-  {
-    status=m1['status'];
-    totalResults=m1['totalResults'];
-
-    List aList=m1['articles'];
-    articleList = aList.map((e) => Articles().articleJson(e)).toList();
-    NewsModal n1 = NewsModal(totalResults: totalResults,status: status ,articleList: articleList);
-    return n1;
-  }
-}
-
-class Articles {
-  String? author, title, description, url, urlToImage, publishedAt, content;
-  Source? source;
-
-  Articles({
-    this.author,
-    this.title,
-    this.description,
-    this.url,
-    this.urlToImage,
-    this.publishedAt,
-    this.content,
-    this.source,
+class NewsModal {
+  NewsModal({
+    required this.status,
+    required this.totalResults,
+    required this.articles,
   });
 
-  Articles articleJson(Map m1) {
-    author = m1['author'];
-    title = m1['title'];
-    description = m1['description'];
-    url = m1['url'];
-    urlToImage = m1['urlToImage'];
-    publishedAt = m1['publishedAt'];
-    content = m1['content'];
+  String status;
+  int totalResults;
+  List<Article> articles;
 
-    Source source = Source().sourceJson(m1['source']);
+  factory NewsModal.fromJson(Map<String, dynamic> json) => NewsModal(
+    status: json["status"],
+    totalResults: json["totalResults"],
+    articles: List<Article>.from(json["articles"].map((x) => Article.fromJson(x))),
+  );
 
-    Articles a1 = Articles(
-        title: title,
-        url: url,
-        author: author,
-        content: content,
-        description: description,
-        publishedAt: publishedAt,
-        source: source,
-        urlToImage: urlToImage);
-    return a1;
-  }
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "totalResults": totalResults,
+    "articles": List<dynamic>.from(articles.map((x) => x.toJson())),
+  };
+}
+
+class Article {
+  Article({
+    required this.source,
+    this.author,
+    required this.title,
+    this.description,
+    required this.url,
+    this.urlToImage,
+    required this.publishedAt,
+    this.content,
+  });
+
+  Source source;
+  String? author;
+  String title;
+  String? description;
+  String url;
+  String? urlToImage;
+  DateTime publishedAt;
+  String? content;
+
+  factory Article.fromJson(Map<String, dynamic> json) => Article(
+    source: Source.fromJson(json["source"]),
+    author: json["author"],
+    title: json["title"],
+    description: json["description"],
+    url: json["url"],
+    urlToImage: json["urlToImage"],
+    publishedAt: DateTime.parse(json["publishedAt"]),
+    content: json["content"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "source": source.toJson(),
+    "author": author,
+    "title": title,
+    "description": description,
+    "url": url,
+    "urlToImage": urlToImage,
+    "publishedAt": publishedAt.toIso8601String(),
+    "content": content,
+  };
 }
 
 class Source {
-  String? name,id;
+  Source({
+    this.id,
+    required this.name,
+  });
 
-  Source({this.id,this.name});
+  String? id;
+  String name;
 
-  Source sourceJson(Map m1) {
-    id=m1['id'];
-    name = m1['name'];
+  factory Source.fromJson(Map<String, dynamic> json) => Source(
+    id: json["id"],
+    name: json["name"],
+  );
 
-    Source s1 = Source(name: name,id: id);
-    return s1;
-  }
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+  };
 }
